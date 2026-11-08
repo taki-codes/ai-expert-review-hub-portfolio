@@ -767,16 +767,18 @@ async function verifyReviewArtifactsPage(input) {
     requestFilteredHtml,
     new RegExp(input.sampleArtifactPath.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"))
   );
-  assert.doesNotMatch(
-    requestFilteredHtml,
-    new RegExp(input.reportArtifactPath.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"))
-  );
+  // React's hydration payload still contains all client props. Check rendered
+  // artifact rows rather than treating an embedded path as visible content.
+  assert.deepEqual(renderedArtifactPaths(requestFilteredHtml), [input.expectedAbsoluteArtifactPath]);
 
   const reportFilteredResponse = await fetch(
     `${baseUrl}/reviews/${encodeURIComponent(input.runId)}/artifacts?usage=report`
   );
   assert.equal(reportFilteredResponse.status, 200);
   const reportFilteredHtml = await reportFilteredResponse.text();
+  const reportPaths = renderedArtifactPaths(reportFilteredHtml);
+  assert.ok(reportPaths.includes(input.expectedAbsoluteReportArtifactPath));
+  assert.ok(!reportPaths.includes(input.expectedAbsoluteArtifactPath));
   assert.match(reportFilteredHtml, /用途: report/);
   assert.match(reportFilteredHtml, /report/);
   assert.match(reportFilteredHtml, /スキャン結果や解析レポート/);
@@ -877,6 +879,13 @@ async function readExpectedPreviewLine(absolutePath) {
 
   assert.ok(line, `preview line was not found for ${absolutePath}`);
   return line;
+}
+
+function renderedArtifactPaths(html) {
+  const entities = { "&amp;": "&", "&quot;": '"', "&#x27;": "'", "&#39;": "'", "&lt;": "<", "&gt;": ">" };
+  return Array.from(html.matchAll(/\bdata-copy-path="([^"]*)"/g), (match) =>
+    match[1].replace(/&(?:amp|quot|#x27|#39|lt|gt);/g, (entity) => entities[entity])
+  );
 }
 
 function extractPreviewHint(line) {
