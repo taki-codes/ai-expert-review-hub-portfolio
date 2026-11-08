@@ -1,0 +1,60 @@
+{
+  "version": "1.76.0",
+  "results": [
+    {
+      "check_id": "javascript.lang.security.audit.eval-detected.eval-detected",
+      "path": "src/app/example.ts",
+      "start": {
+        "line": 14,
+        "col": 9
+      },
+      "end": {
+        "line": 14,
+        "col": 26
+      },
+      "extra": {
+        "message": "Detected use of eval(). This can execute attacker-controlled code.",
+        "severity": "ERROR",
+        "fix": "Avoid eval and replace it with a safer parser or explicit control flow.",
+        "metadata": {
+          "category": "security",
+          "confidence": "HIGH",
+          "technology": [
+            "javascript"
+          ]
+        }
+      }
+    },
+    {
+      "check_id": "typescript.express.security.audit.no-direct-res-send.no-direct-res-send",
+      "path": "src/server/routes/reviews.ts",
+      "start": {
+        "line": 27,
+        "col": 3
+      },
+      "end": {
+        "line": 27,
+        "col": 42
+      },
+      "extra": {
+        "message": "Directly sending unescaped input in an HTTP response can expose XSS risk.",
+        "severity": "WARNING",
+        "metadata": {
+          "category": "security",
+          "confidence": "MEDIUM",
+          "technology": [
+            "typescript",
+            "express"
+          ]
+        }
+      }
+    }
+  ],
+  "errors": [],
+  "paths": {
+    "scanned": [
+      "src/app/example.ts",
+      "src/server/routes/reviews.ts"
+    ]
+  }
+}

@@ -1,0 +1,13 @@
+version: "3.9"
+services:
+  app:
+    build:
+      context: ..
+      dockerfile: ops/Dockerfile.example
+    env_file:
+      - .env.example
+    ports:
+      - "3000:3000"
+      - "8000:8000"
+    volumes:
+      - ../data:/app/data

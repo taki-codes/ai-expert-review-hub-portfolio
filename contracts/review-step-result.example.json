@@ -1,0 +1,10 @@
+{
+  "stepName": "gemini",
+  "status": "success",
+  "requestJson": {},
+  "responseJson": {},
+  "summaryText": "Generated 5 UI issues.",
+  "startedAt": "2026-04-24T10:00:00Z",
+  "finishedAt": "2026-04-24T10:00:20Z",
+  "errorMessage": null
+}

@@ -1,0 +1,13 @@
+{
+  "sourceTool": "gemini",
+  "category": "cta",
+  "severity": "high",
+  "title": "Primary action is visually weak",
+  "description": "The main action is not clearly distinguishable from secondary actions.",
+  "reason": "Users may hesitate or choose the wrong next step.",
+  "suggestion": "Increase contrast and spacing around the primary action.",
+  "targetRef": "screenshot:signup.png",
+  "lineStart": null,
+  "lineEnd": null,
+  "confidence": 0.87
+}

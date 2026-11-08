@@ -1,0 +1,44 @@
+{
+  "site": [
+    {
+      "name": "__API_SPEC_NAME__",
+      "host": "__API_SPEC_FORMAT__",
+      "alerts": [
+        {
+          "pluginid": "10021",
+          "alert": "X-Content-Type-Options Header Missing",
+          "riskcode": "2",
+          "riskdesc": "Medium (Medium)",
+          "confidence": "Medium",
+          "desc": "The anti-MIME-sniffing header X-Content-Type-Options was not set to 'nosniff'.",
+          "solution": "Ensure the application sets the X-Content-Type-Options header to 'nosniff' for responses.",
+          "reference": "https://owasp.org/www-project-secure-headers/",
+          "cweid": "16",
+          "instances": [
+            {
+              "uri": "/api/headers",
+              "method": "GET"
+            }
+          ]
+        },
+        {
+          "pluginid": "10038",
+          "alert": "Content Security Policy (CSP) Header Not Set",
+          "riskcode": "3",
+          "riskdesc": "High (High)",
+          "confidence": "High",
+          "desc": "The application did not return a Content-Security-Policy header.",
+          "solution": "Define and return a Content-Security-Policy header that limits trusted sources.",
+          "reference": "https://owasp.org/www-project-secure-headers/",
+          "cweid": "693",
+          "instances": [
+            {
+              "uri": "/graphql",
+              "method": "POST"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

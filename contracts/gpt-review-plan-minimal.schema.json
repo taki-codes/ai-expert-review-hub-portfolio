@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "GptReviewPlanMinimal",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["executiveSummary", "priorities", "actions"],
+  "properties": {
+    "executiveSummary": {
+      "type": "string"
+    },
+    "priorities": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["priority", "title", "whyItMatters"],
+        "properties": {
+          "priority": {
+            "type": "string",
+            "enum": ["p0", "p1", "p2"]
+          },
+          "title": {
+            "type": "string"
+          },
+          "whyItMatters": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "actions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["target", "action"],
+        "properties": {
+          "target": {
+            "type": "string",
+            "enum": ["ui", "figma", "security", "content"]
+          },
+          "action": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

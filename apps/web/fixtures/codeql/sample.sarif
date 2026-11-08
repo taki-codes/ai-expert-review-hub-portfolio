@@ -1,0 +1,64 @@
+{
+  "runs": [
+    {
+      "tool": {
+        "driver": {
+          "rules": [
+            {
+              "id": "js/xss",
+              "name": "Reflected cross-site scripting",
+              "shortDescription": { "text": "User-controlled input reaches an HTTP response." },
+              "fullDescription": { "text": "Unsanitized user input is written into an HTML response, creating reflected XSS risk." },
+              "help": { "text": "HTML-encode the response or use a templating path that escapes user input." },
+              "properties": {
+                "tags": ["security"],
+                "security-severity": "8.8",
+                "precision": "high"
+              }
+            },
+            {
+              "id": "js/path-injection",
+              "name": "Path injection",
+              "shortDescription": { "text": "User input influences a filesystem path." },
+              "fullDescription": { "text": "A user-controlled value is used as part of a filesystem path without sufficient validation." },
+              "help": { "text": "Validate the path segment against an allow-list before reading or writing files." },
+              "properties": {
+                "tags": ["security"],
+                "security-severity": "6.1",
+                "precision": "medium"
+              }
+            }
+          ]
+        }
+      },
+      "results": [
+        {
+          "ruleId": "js/xss",
+          "level": "error",
+          "message": { "text": "User-controlled input reaches a response writer." },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": { "uri": "src/server/routes/reviews.ts" },
+                "region": { "startLine": 27 }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "js/path-injection",
+          "level": "warning",
+          "message": { "text": "Path input is not validated before use." },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": { "uri": "src/lib/storage/artifact-writer.ts" },
+                "region": { "startLine": 18 }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

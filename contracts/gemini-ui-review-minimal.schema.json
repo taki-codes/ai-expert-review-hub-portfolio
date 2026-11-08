@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "GeminiUiReviewMinimal",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["overallScore", "summary", "issues"],
+  "properties": {
+    "overallScore": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "summary": {
+      "type": "string"
+    },
+    "issues": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "category",
+          "severity",
+          "title",
+          "reason",
+          "suggestion"
+        ],
+        "properties": {
+          "category": {
+            "type": "string",
+            "enum": [
+              "layout",
+              "visual_hierarchy",
+              "cta",
+              "form",
+              "navigation",
+              "copy",
+              "accessibility",
+              "mobile",
+              "other"
+            ]
+          },
+          "severity": {
+            "type": "string",
+            "enum": ["high", "medium", "low"]
+          },
+          "title": {
+            "type": "string"
+          },
+          "reason": {
+            "type": "string"
+          },
+          "suggestion": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

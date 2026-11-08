@@ -1,0 +1,113 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+enum ReviewRunStatus {
+  draft
+  running
+  completed
+  partial_success
+  failed
+}
+
+enum ReviewStepStatus {
+  pending
+  running
+  success
+  failed
+  skipped
+}
+
+enum ReviewInputType {
+  image
+  text
+}
+
+model ReviewRun {
+  id               String           @id @default(cuid())
+  status           ReviewRunStatus  @default(draft)
+  archived         Boolean          @default(false)
+  title            String?
+  memo             String?
+  tagsJson         String?
+  executiveSummary String?
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @updatedAt
+  inputs           ReviewInput[]
+  steps            ReviewStep[]
+  findings         ReviewFinding[]
+  artifacts        ReviewArtifact[]
+
+  @@map("review_runs")
+}
+
+model ReviewInput {
+  id               String          @id @default(cuid())
+  reviewRunId      String
+  inputType        ReviewInputType
+  textContent      String?
+  fileName         String?
+  mimeType         String?
+  artifactPath     String?
+  createdAt        DateTime        @default(now())
+  reviewRun        ReviewRun       @relation(fields: [reviewRunId], references: [id], onDelete: Cascade)
+
+  @@index([reviewRunId])
+  @@map("review_inputs")
+}
+
+model ReviewStep {
+  id            String           @id @default(cuid())
+  reviewRunId   String
+  stepName      String
+  status        ReviewStepStatus @default(pending)
+  skippedReason String?
+  summaryText   String?
+  errorMessage  String?
+  startedAt     DateTime?
+  finishedAt    DateTime?
+  createdAt     DateTime         @default(now())
+  updatedAt     DateTime         @updatedAt
+  reviewRun     ReviewRun        @relation(fields: [reviewRunId], references: [id], onDelete: Cascade)
+
+  @@index([reviewRunId, stepName])
+  @@map("review_steps")
+}
+
+model ReviewFinding {
+  id          String   @id @default(cuid())
+  reviewRunId String
+  sourceTool  String
+  category    String
+  severity    String
+  title       String
+  description String?
+  reason      String
+  suggestion  String
+  targetRef   String?
+  confidence  Float?
+  createdAt   DateTime @default(now())
+  reviewRun   ReviewRun @relation(fields: [reviewRunId], references: [id], onDelete: Cascade)
+
+  @@index([reviewRunId, sourceTool])
+  @@map("review_findings")
+}
+
+model ReviewArtifact {
+  id           String   @id @default(cuid())
+  reviewRunId  String
+  stepName     String
+  artifactType String
+  path         String
+  contentType  String?
+  createdAt    DateTime @default(now())
+  reviewRun    ReviewRun @relation(fields: [reviewRunId], references: [id], onDelete: Cascade)
+
+  @@index([reviewRunId, stepName])
+  @@map("review_artifacts")
+}

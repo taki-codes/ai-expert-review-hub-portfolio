@@ -1,0 +1,24 @@
+{
+  "findings": [
+    {
+      "category": "security",
+      "severity": "high",
+      "title": "Potential SQL injection in review search endpoint",
+      "description": "An unsanitized query parameter is concatenated into a SQL statement.",
+      "reason": "An attacker-controlled search term reaches the database query builder without parameterization.",
+      "suggestion": "Switch to parameterized queries and validate accepted search fields.",
+      "targetRef": "src/server/routes/search.ts:42",
+      "confidence": 0.88
+    },
+    {
+      "category": "security",
+      "severity": "medium",
+      "title": "File path input should be constrained",
+      "description": "A repository path value is used without strong normalization.",
+      "reason": "Path traversal may be possible if user input is not normalized and restricted.",
+      "suggestion": "Resolve against a trusted root and reject path segments that escape the workspace.",
+      "targetRef": "src/lib/queue/review-orchestrator.ts:52",
+      "confidence": 0.74
+    }
+  ]
+}
